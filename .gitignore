@@ -11,6 +11,8 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 *.log
+# Firebase büyük bundle dosyaları (100MB üstü)
+[Aa]ssets/Firebase/Plugins/x86_64/*.bundle
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data

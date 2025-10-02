@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "998423736726",
+    "firebase_url": "https://journey-676f0-default-rtdb.firebaseio.com",
+    "project_id": "journey-676f0",
+    "storage_bucket": "journey-676f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998423736726:android:494b83890bd3cedc146db7",
+        "android_client_info": {
+          "package_name": "com.WEBREMciler.Journey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998423736726-okhceidvplu4o3cvo60uuj27d8pfrd62.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiKwIbCTA9tyY0OfOCPMXaM34c8NFKbyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998423736726-okhceidvplu4o3cvo60uuj27d8pfrd62.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
