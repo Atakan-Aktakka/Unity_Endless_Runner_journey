@@ -21,7 +21,34 @@ public class HeroCharacterController : MonoBehaviour
     private float jumpTimer;
     private float jumpGracePeriod = 0.2f;
     public Touch finger;
-    
+
+    // Exposed for BlockManager: difficulty ramps the run speed, gap math reads the jump physics
+    public float RunSpeed
+    {
+        get { return runSpeed; }
+        set { runSpeed = Mathf.Max(0f, value); }
+    }
+    public float JumpHeight { get { return jumpHeight; } }
+    public float Gravity { get { return gravity; } }
+    public LayerMask GroundLayers { get { return groundLayers; } }
+
+    // HeroLaneController turns this off and decides tap (jump) vs. swipe (lane change) itself
+    public bool TouchJumpEnabled { get; set; } = true;
+
+    // TutorialManager stops the forward run while it waits for the player (gravity / jumping still work)
+    public bool MovementLocked { get; set; }
+
+    public bool IsGrounded { get { return isGrounded; } }
+
+    // Raised the moment a jump actually starts (tutorial, sounds, effects)
+    public event System.Action Jumped;
+
+    // Buffered jump request (same grace period as the keyboard/touch input), e.g. for UI buttons
+    public void RequestJump()
+    {
+        jumpTimer = Time.time;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +59,12 @@ public class HeroCharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Paused / game over: no input, otherwise a tap on a UI button queues a jump for the resume
+        if (Time.timeScale == 0f)
+        {
+            return;
+        }
+
         horizontalInput = 1;
 
         // Face Forward
@@ -70,19 +103,19 @@ public class HeroCharacterController : MonoBehaviour
             }
         }
 
-        if (!blocked)
+        if (!blocked && !MovementLocked)
         {
             characterController.Move(new Vector3(horizontalInput * runSpeed, 0, 0) * Time.deltaTime);
         }
 
         // Jumping
-       // jumpPressed = Input.GetButtonDown("Jump");
+        jumpPressed = Input.GetButtonDown("Jump");
 
         if (Input.touchCount < 0)
         {
             finger=Input.GetTouch(0);       
         }
-        if (Input.touchCount==1)  //>0
+        if (TouchJumpEnabled && Input.touchCount==1)  //>0
         {
             jumpPressed=true;
            
@@ -93,18 +126,14 @@ public class HeroCharacterController : MonoBehaviour
         if (jumpPressed)
         {
             jumpTimer = Time.time;
-            Debug.Log("jumpTimer"+jumpTimer);
-
         }
 
         if (isGrounded && (jumpPressed || (jumpTimer > 0 && Time.time < jumpTimer + jumpGracePeriod)))
         {
             velocity.y += Mathf.Sqrt(jumpHeight * -2 * gravity);
-            if (jumpSoundEffect != null)
-            {
-                AudioSource.PlayClipAtPoint(jumpSoundEffect, transform.position, 0.5f);
-            }
+            SoundManager.PlayJump(jumpSoundEffect, transform.position);
             jumpTimer = -1;
+            if (Jumped != null) Jumped();
             
         }
         jumpPressed=false;

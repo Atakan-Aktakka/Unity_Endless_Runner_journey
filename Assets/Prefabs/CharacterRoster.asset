@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 602a832fd9e7cde43ad0993ab3455ac3, type: 3}
+  m_Name: CharacterRoster
+  m_EditorClassIdentifier: 
+  characters:
+  - displayName: "\u0130ngiliz Piyade"
+    prefab: {fileID: 132888, guid: aa05473e4d04e834eb7a29b53251c8cf, type: 3}
+  - displayName: Alman Piyade
+    prefab: {fileID: 100632, guid: 789396300d039cc4fa674d36eddb10a7, type: 3}
+  - displayName: "Alev Silahl\u0131 Asker"
+    prefab: {fileID: 187294, guid: c119a327e0fdf4f4890b2d98da9e2914, type: 3}

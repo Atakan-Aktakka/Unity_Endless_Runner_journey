@@ -1,17 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
+// Opening menu: Play / Character select / Quit. No account needed, the high score is stored on the device.
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
 
-    //Screen object variables
-    public GameObject loginUI;
-    public GameObject registerUI;
-    public GameObject userDataUI;
-    public GameObject scoreboardUI;
+    [Header("Scenes")]
+    [SerializeField] private string gameSceneName = "SampleScene";
+
+    [Header("Screens")]
+    public GameObject mainMenuUI;
+    public GameObject characterSelectUI;
+
+    [Header("Main Menu")]
+    [SerializeField] private TMP_Text highScoreText;
 
     private void Awake()
     {
@@ -26,36 +30,54 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    //Functions to change the login screen UI
+    private void Start()
+    {
+        Time.timeScale = 1f;
+        MainMenuScreen();
+    }
 
     public void ClearScreen() //Turn off all screens
     {
-        loginUI.SetActive(false);
-        registerUI.SetActive(false);
-        userDataUI.SetActive(false);
-        scoreboardUI.SetActive(false);
+        SetActive(mainMenuUI, false);
+        SetActive(characterSelectUI, false);
     }
 
-    public void LoginScreen() //Back button
+    public void MainMenuScreen() //Opening screen / back to menu
     {
         ClearScreen();
-        loginUI.SetActive(true);
-    }
-    public void RegisterScreen() // Regester button
-    {
-        ClearScreen();
-        registerUI.SetActive(true);
-    }
-
-    public void UserDataScreen() //Logged in
-    {
-        ClearScreen();
-        userDataUI.SetActive(true);
+        SetActive(mainMenuUI, true);
+        if (highScoreText != null)
+        {
+            highScoreText.SetText("EN YÜKSEK SKOR: {0:0}", Score.HighScore);
+        }
     }
 
-    public void ScoreboardScreen() //Scoreboard button
+    public void CharacterSelectScreen() //Character select button
     {
         ClearScreen();
-        scoreboardUI.SetActive(true);
+        SetActive(characterSelectUI, true);
+    }
+
+    public void PlayGame() //Play button
+    {
+        HeroManager.gameOver = false;
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(gameSceneName);
+    }
+
+    public void QuitGame() //Quit button
+    {
+        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
+
+    private static void SetActive(GameObject screen, bool active)
+    {
+        if (screen != null)
+        {
+            screen.SetActive(active);
+        }
     }
 }
